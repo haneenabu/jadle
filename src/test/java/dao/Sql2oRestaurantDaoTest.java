@@ -1,5 +1,6 @@
 package dao;
 
+import models.Foodtype;
 import models.Restaurant;
 import org.junit.After;
 import org.junit.Before;
@@ -7,10 +8,13 @@ import org.junit.Test;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public class Sql2oRestaurantDaoTest {
     private Sql2oRestaurantDao restaurantDao;
+    private Sql2oFoodtypeDao foodTypeDao;
     private Connection conn; //must be sql2o class conn
 
     @Before
@@ -59,11 +63,24 @@ public class Sql2oRestaurantDaoTest {
     }
 
     @Test
-    public void delete_DeleteRestaurant_null() throws Exception {
-        Restaurant test1 = setupRestaurant();
-        restaurantDao.add(test1);
-        restaurantDao.deleteById(1);
-        assertEquals(0, restaurantDao.getAll().size());
+    public void deleteingFoodTypeAlsoUpdatesJoinTable() throws Exception {
+        Foodtype testFoodtype  = new Foodtype("Seafood");
+        foodTypeDao.add(testFoodtype);
+
+        Foodtype testFoodtype2  = new Foodtype("Italian");
+        foodTypeDao.add(testFoodtype);
+
+        Restaurant testRestaurant = setupRestaurant();
+        restaurantDao.add(testRestaurant);
+
+        Restaurant altRestaurant = setupAltRestaurant();
+        restaurantDao.add(altRestaurant);
+
+        foodTypeDao.addFoodTypeToRestaurant(testFoodtype,testRestaurant);
+        foodTypeDao.addFoodTypeToRestaurant(testFoodtype2, testRestaurant);
+
+        foodTypeDao.deleteById(testFoodtype.getId());
+        assertEquals(0, foodTypeDao.getAllRestaurantsForAFoodtype(testFoodtype.getId()).size());
     }
 
     @Test
@@ -155,13 +172,31 @@ public class Sql2oRestaurantDaoTest {
         assertNotEquals("fishwitch.jpg", testRestaurant.getImage());
     }
 
+    @Test
+    public void getAllFoodtypesForARestaurantReturnsFoodtypesCorrectly() throws Exception {
+        Foodtype testFoodtype  = new Foodtype("Seafood");
+        foodTypeDao.add(testFoodtype);
+
+        Foodtype otherFoodtype  = new Foodtype("Bar Food");
+        foodTypeDao.add(otherFoodtype);
+
+        Restaurant testRestaurant = setupRestaurant();
+        restaurantDao.add(testRestaurant);
+        restaurantDao.addRestaurantToFoodType(testRestaurant,testFoodtype);
+        restaurantDao.addRestaurantToFoodType(testRestaurant,otherFoodtype);
+
+        Foodtype[] foodtypes = {testFoodtype, otherFoodtype}; //oh hi what is this?
+
+        assertEquals(restaurantDao.getAllFoodtypesForARestaurant(testRestaurant.getId()), Arrays.asList(foodtypes));
+    }
+
     //helper method
-    public Restaurant setupRestaurant (){
+    public static Restaurant setupRestaurant (){
         return new Restaurant("Fish Witch", "214 NE Broadway", "97232", "503-402-9874", "http://fishwitch.com", "hellofishy@fishwitch.com", "/no_image.jpg");
 
     }
 
-    public Restaurant setupAltRestaurant (){
+    public static  Restaurant setupAltRestaurant (){
         return new Restaurant("Fish Witch", "214 NE Broadway", "97232", "503-402-9874");
 
     }
