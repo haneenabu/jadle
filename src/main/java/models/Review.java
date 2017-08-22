@@ -9,14 +9,12 @@ public class Review {
     private LocalDateTime createdAt;
     private int id;
     private int restaurantId; //i will be used to connect Restaurant to Review.
-    private String content;
 
-    public Review(String writtenBy, int rating, int restaurantId, String content) {
+    public Review(String writtenBy, int rating, int restaurantId) {
         this.writtenBy = writtenBy;
         this.rating = rating;
         this.restaurantId = restaurantId;
         this.createdAt = LocalDateTime.now();
-        this.content = content;
     }
 
     @Override
@@ -29,17 +27,15 @@ public class Review {
         if (rating != review.rating) return false;
         if (id != review.id) return false;
         if (restaurantId != review.restaurantId) return false;
-        if (!writtenBy.equals(review.writtenBy)) return false;
-        return content.equals(review.content);
+        return writtenBy != null ? writtenBy.equals(review.writtenBy) : review.writtenBy == null;
     }
 
     @Override
     public int hashCode() {
-        int result = writtenBy.hashCode();
+        int result = writtenBy != null ? writtenBy.hashCode() : 0;
         result = 31 * result + rating;
         result = 31 * result + id;
         result = 31 * result + restaurantId;
-        result = 31 * result + content.hashCode();
         return result;
     }
 
@@ -83,13 +79,6 @@ public class Review {
         this.restaurantId = restaurantId;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 
     //we will create the setter for createdAt in a later lesson.
 }

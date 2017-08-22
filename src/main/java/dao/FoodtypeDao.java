@@ -5,8 +5,10 @@ import models.Foodtype;
 import java.util.List;
 
 public interface FoodtypeDao {
+
     //create
     void add(Foodtype foodtype); // N
+
     //void addFoodTypeToRestaurant(Foodtype foodtype, Restaurant restaurant); // D
 
     //read
@@ -17,5 +19,5 @@ public interface FoodtypeDao {
     //omit for now
 
     //delete
-    void deleteById(int id); //see above
+//    void deleteById(int id); //see above
 }

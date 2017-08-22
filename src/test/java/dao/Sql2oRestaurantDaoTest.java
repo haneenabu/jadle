@@ -92,7 +92,7 @@ public class Sql2oRestaurantDaoTest {
     @Test
     public void getWebsiteReturnsCorrectWebsite() throws Exception {
         Restaurant testRestaurant = setupAltRestaurant();
-        assertEquals("no website listed", testRestaurant.getWebsite());
+        assertEquals("no website available", testRestaurant.getWebsite());
     }
 
     @Test
@@ -157,7 +157,7 @@ public class Sql2oRestaurantDaoTest {
 
     //helper method
     public Restaurant setupRestaurant (){
-        return new Restaurant("Fish Witch", "214 NE Broadway", "97232", "503-402-9874", "http://fishwitch.com", "hellofishy@fishwitch.com", "fishwitch.jpg");
+        return new Restaurant("Fish Witch", "214 NE Broadway", "97232", "503-402-9874", "http://fishwitch.com", "hellofishy@fishwitch.com", "/no_image.jpg");
 
     }
 

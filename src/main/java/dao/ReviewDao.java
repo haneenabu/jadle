@@ -1,5 +1,6 @@
 package dao;
 
+import models.Restaurant;
 import models.Review;
 
 import java.util.List;
@@ -8,11 +9,14 @@ public interface ReviewDao {
     //create
     void add(Review review); //F
 
-    //read
+    //get all
     List<Review> getAllReviewsByRestaurant(int restaurantId); // H & G
 
+    //find by id
+    Review findById(int id);
+
     //update
-    //omit for now
+    void update(String writtenBy, int rating, int restaurantId, int id, String content);
 
     //delete
     void deleteById(int id); //M
