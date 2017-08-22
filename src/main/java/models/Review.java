@@ -1,13 +1,12 @@
 package models;
 
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Review {
     private String writtenBy;
     private int rating;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     private int id;
     private int restaurantId; //i will be used to connect Restaurant to Review.
     private String content;
@@ -16,7 +15,7 @@ public class Review {
         this.writtenBy = writtenBy;
         this.rating = rating;
         this.restaurantId = restaurantId;
-        this.createdAt = Timestamp.valueOf(LocalDateTime.now());
+        this.createdAt = LocalDateTime.now();
         this.content = content;
     }
 
@@ -64,7 +63,7 @@ public class Review {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
