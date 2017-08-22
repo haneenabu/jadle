@@ -70,10 +70,13 @@ public class App {
         });
 
         //CREATE
-        post("/foodtype/new", "application/json", (req, res) -> {
+        post("/restaurants/:restaurantId/foodtype/new", "application/json", (req, res) -> {
+            int restaurantId = Integer.parseInt(req.params("restaurantId"));
+            Restaurant restaurant = restaurantDao.findById(restaurantId);
             Foodtype foodtype = gson.fromJson(req.body(), Foodtype.class);
             foodtypeDao.add(foodtype);
-            res.status(201);
+            foodtypeDao.addFoodTypeToRestaurant(foodtype, restaurant);
+//            res.status(201);
             return gson.toJson(foodtype);
         });
 
@@ -82,10 +85,10 @@ public class App {
             return gson.toJson(foodtypeDao.getAll());//send it back to be displayed
         });
 
-//        get("/foodtype/:id", "application/json", (req, res) -> { //accept a request in format JSON from an app
-//            int foodtypeId = Integer.parseInt(req.params("id"));
-//            return gson.toJson(foodtypeDao.(restaurantId));
-//        });
+        get("/restaurants/:restaurantId/foodtype/:id", "application/json", (req, res) -> { //accept a request in format JSON from an app
+            int foodtypeId = Integer.parseInt(req.params("id"));
+            return gson.toJson(foodtypeDao.getAllRestaurantsForAFoodtype(foodtypeId).size());
+        });
 
 
         //FILTERS
