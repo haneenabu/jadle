@@ -63,18 +63,30 @@ public class App {
             return gson.toJson(reviewDao.getAllReviewsByRestaurant(restaurantId));//send it back to be displayed
         });
 
-        get("/reviews/:id", "application/json", (req, res) -> { //accept a request in format JSON from an app
+        get("/restaurants/:restaurantId/reviews/:id", "application/json", (req, res) -> { //accept a request in format JSON from an app
             res.type("application/json");
             int reviewId = Integer.parseInt(req.params("id"));
             return gson.toJson(reviewDao.findById(reviewId));
         });
 
         //CREATE
-        post("/restaurants/:restaurantId/foodtype/new", "application/json", (req, res) -> {
-            int restaurantId = Integer.parseInt(req.params("restaurantId"));
-            Restaurant restaurant = restaurantDao.findById(restaurantId);
+        post("/foodtype/new", "application/json", (req, res) -> {
             Foodtype foodtype = gson.fromJson(req.body(), Foodtype.class);
             foodtypeDao.add(foodtype);
+//            res.status(201);
+            return gson.toJson(foodtype);
+        });
+        get("/restaurants/:restaurantId/foodtype", "application/json", (req, res) -> {
+            int restaurantId = Integer.parseInt(req.params("restaurantId"));
+//            res.status(201);
+            return gson.toJson(restaurantDao.getAllFoodtypesForARestaurant(restaurantId));
+        });
+
+        get("/restaurants/:restaurantId/foodtype/:id", "application/json", (req, res) -> {
+            int restaurantId = Integer.parseInt(req.params("restaurantId"));
+            Restaurant restaurant = restaurantDao.findById(restaurantId);
+            int foodId = Integer.parseInt(req.params("id"));
+            Foodtype foodtype = foodtypeDao.getById(foodId);
             foodtypeDao.addFoodTypeToRestaurant(foodtype, restaurant);
 //            res.status(201);
             return gson.toJson(foodtype);
@@ -85,9 +97,9 @@ public class App {
             return gson.toJson(foodtypeDao.getAll());//send it back to be displayed
         });
 
-        get("/restaurants/:restaurantId/foodtype/:id", "application/json", (req, res) -> { //accept a request in format JSON from an app
+        get("/foodtype/:id", "application/json", (req, res) -> { //accept a request in format JSON from an app
             int foodtypeId = Integer.parseInt(req.params("id"));
-            return gson.toJson(foodtypeDao.getAllRestaurantsForAFoodtype(foodtypeId).size());
+            return gson.toJson(foodtypeDao.getAllRestaurantsForAFoodtype(foodtypeId));
         });
 
 
