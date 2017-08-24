@@ -6,6 +6,7 @@
 *.exe
 *.o
 *.so
+*.iml
 
 # Packages #
 ############
@@ -35,6 +36,7 @@ Thumbs.db
 # Java and Gradle #
 ############
 build/
+.idea
 .gradle/
 Gradlew
 Gradlew.bat
