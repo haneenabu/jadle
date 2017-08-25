@@ -2,7 +2,7 @@
 
 #### Java project for Epicodus, August 2017
 
-#### By Trevor Gill
+#### By Haneen AbuKhater and Trevor Gill
 
 ## Description
 
